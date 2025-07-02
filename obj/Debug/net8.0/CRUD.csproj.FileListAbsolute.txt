@@ -121,3 +121,10 @@
 /home/gusta/projects/CRUD/bin/Debug/net8.0/NSwag.Generation.dll
 /home/gusta/projects/CRUD/bin/Debug/net8.0/NSwag.Generation.AspNetCore.dll
 /home/gusta/projects/CRUD/bin/Debug/net8.0/YamlDotNet.dll
+/home/gusta/projects/CRUD/obj/Debug/net8.0/CRUD.sourcelink.json
+/home/gusta/projects/CRUD/bin/Debug/net8.0/DotNetEnv.dll
+/home/gusta/projects/CRUD/bin/Debug/net8.0/Microsoft.Extensions.Configuration.dll
+/home/gusta/projects/CRUD/bin/Debug/net8.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/home/gusta/projects/CRUD/bin/Debug/net8.0/Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+/home/gusta/projects/CRUD/bin/Debug/net8.0/Microsoft.Extensions.Primitives.dll
+/home/gusta/projects/CRUD/bin/Debug/net8.0/Sprache.dll

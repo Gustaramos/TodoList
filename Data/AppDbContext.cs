@@ -7,6 +7,6 @@ namespace CRUD.Data
     {
         public AppDbContext(DbContextOptions options) : base(options) { }
 
-        public DbSet<Tasks> TasksManager { get; set; }
+        public DbSet<TaskItem> TasksManager { get; set; }
     }
 }

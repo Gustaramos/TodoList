@@ -1,5 +1,5 @@
-using System.Runtime.InteropServices;
 using CRUD.Data;
+using CRUD.DTO;
 using CRUD.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +18,7 @@ namespace CRUD.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTask(Tasks task)
+        public async Task<IActionResult> CreateAsync(TaskItem task)
         {
             _appDbContext.TasksManager.Add(task);
             await _appDbContext.SaveChangesAsync();
@@ -27,23 +27,23 @@ namespace CRUD.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Task>>> GetTaskBy()
+        public async Task<ActionResult<IEnumerable<TaskDto>>> GetAsync()
         {
-            var tasksResult = await _appDbContext.TasksManager
-            .Select(task => TasksToDTO(task))
-            .ToListAsync();
+            var tasks = await _appDbContext.TasksManager
+            .Select(t => new TaskDto()
+            {
+                Id = t.Id,
+                TaskName = t.TaskName,
+                TaskStatus = t.TaskStatus,
+                DeadLine = t.DeadLine,
+                Description = t.Description
+            }).ToListAsync();
 
-            // var temp = await _appDbContext.TasksManager.
-            // FindAsync(FilterByStatus(taskStatus)
-            // .ToList());
-
-            await _appDbContext.SaveChangesAsync();
-            return Ok(tasksResult);
+            return Ok(tasks);
         }
 
-
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditTask(int id, Tasks task)
+        public async Task<IActionResult> EditAsync(int id, TaskItem task)
         {
             if (id != task.Id)
             {
@@ -55,25 +55,24 @@ namespace CRUD.Controllers
 
             try
             {
-                await _appDbContext.SaveChangesAsync();
+                await _appDbContext.TasksManager.FindAsync(id);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TaskExists(id))
+                if (await TaskExists(id))
                 {
-                    return NotFound();
+                    await _appDbContext.SaveChangesAsync();
                 }
                 else
                 {
-                    throw;
+                    throw new Exception("Task don't exist!");
                 }
             }
-
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> ExcludeTask(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             var task = await _appDbContext.TasksManager.FindAsync(id);
             if (task == null)
@@ -86,10 +85,9 @@ namespace CRUD.Controllers
             return Ok(task);
         }
 
-        private bool TaskExists(int id)
+        private async Task<bool> TaskExists(int id)
         {
-            _appDbContext.TasksManager.Find(id);
-            return true;
+            return await _appDbContext.TasksManager.AnyAsync(t => t.Id == id);
         }
 
         private string FilterByStatus(string status)
@@ -100,18 +98,9 @@ namespace CRUD.Controllers
             return getTaskByStatus;
         }
 
-        private static Tasks TasksToDTO(Tasks task)
-        {
-            Tasks tasksDTO = new()
-            {
-                Id = task.Id,
-                TaskName = task.TaskName,
-                TaskStatus = task.TaskStatus,
-                DeadLine = task.DeadLine,
-                Description = task.Description
-            };
-            return tasksDTO; 
-        }
+        
 
     }
+
+
 }
