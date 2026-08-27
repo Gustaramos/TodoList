@@ -97,9 +97,6 @@ namespace CRUD.Controllers
             var getTaskByStatus = retrieveTask.TaskStatus;
             return getTaskByStatus;
         }
-
-        
-
     }
 
 
