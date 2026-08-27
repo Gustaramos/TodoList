@@ -128,3 +128,6 @@
 /home/gusta/projects/CRUD/bin/Debug/net8.0/Microsoft.Extensions.Configuration.EnvironmentVariables.dll
 /home/gusta/projects/CRUD/bin/Debug/net8.0/Microsoft.Extensions.Primitives.dll
 /home/gusta/projects/CRUD/bin/Debug/net8.0/Sprache.dll
+/Users/gustavoranosdasilva/Task_Manager/TodoList/obj/Debug/net8.0/CRUD.dll
+/Users/gustavoranosdasilva/Task_Manager/TodoList/obj/Debug/net8.0/refint/CRUD.dll
+/Users/gustavoranosdasilva/Task_Manager/TodoList/obj/Debug/net8.0/CRUD.pdb
