@@ -22,7 +22,7 @@ namespace CRUD.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("CRUD.Models.Tasks", b =>
+            modelBuilder.Entity("CRUD.Models.TaskItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,6 +35,9 @@ namespace CRUD.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("Done")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("TaskName")
                         .HasColumnType("longtext");

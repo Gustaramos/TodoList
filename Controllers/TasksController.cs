@@ -65,14 +65,7 @@ namespace CRUD.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await TaskExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
                     throw new Exception("Task don't exist!");
-                }
             }
             return Ok(taskById);
         }

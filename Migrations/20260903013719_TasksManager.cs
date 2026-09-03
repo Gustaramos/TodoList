@@ -27,7 +27,8 @@ namespace CRUD.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DeadLine = table.Column<DateOnly>(type: "date", nullable: false),
                     Description = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Done = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
