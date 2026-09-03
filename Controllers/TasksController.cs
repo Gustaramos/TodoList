@@ -27,7 +27,7 @@ namespace CRUD.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TaskDto>>> GetAsync()
+        public async Task<ActionResult<IEnumerable<TaskDto>>> GetAll()
         {
             var tasks = await _appDbContext.TasksManager
             .Select(t => new TaskDto()
@@ -36,39 +36,45 @@ namespace CRUD.Controllers
                 TaskName = t.TaskName,
                 TaskStatus = t.TaskStatus,
                 DeadLine = t.DeadLine,
-                Description = t.Description
+                Description = t.Description,
+                Done = t.Done
             }).ToListAsync();
 
             return Ok(tasks);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> EditAsync(int id, TaskItem task)
-        {
-            if (id != task.Id)
-            {
-                return BadRequest();
-            }
+        [HttpGet("{status}")]
+        public async Task<IActionResult> GetByStatus(string status)
+        {   
+            return Ok(await FilterByStatus(status));
+        }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateStatus(int id, string status)
+        {
             var taskById = await _appDbContext.TasksManager.FindAsync(id);
-            taskById.TaskStatus = task.TaskStatus;
+            if (await TaskExists(id) == false)
+            {
+               return BadRequest();
+            }
 
             try
             {
-                await _appDbContext.TasksManager.FindAsync(id);
+                taskById.TaskStatus = status;
+                await _appDbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (await TaskExists(id))
+                if (!await TaskExists(id))
                 {
-                    await _appDbContext.SaveChangesAsync();
+                    return NotFound();
                 }
                 else
                 {
                     throw new Exception("Task don't exist!");
                 }
             }
-            return Ok();
+            return Ok(taskById);
         }
 
         [HttpDelete("{id}")]
@@ -90,14 +96,19 @@ namespace CRUD.Controllers
             return await _appDbContext.TasksManager.AnyAsync(t => t.Id == id);
         }
 
-        private string FilterByStatus(string status)
+        private async Task<List<TaskDto>> FilterByStatus(string status)
         {
-
-            var retrieveTask = _appDbContext.TasksManager.Find(status);
-            var getTaskByStatus = retrieveTask.TaskStatus;
-            return getTaskByStatus;
+            var tasks = await _appDbContext.TasksManager
+            .Select(t => new TaskDto()
+            {
+                Id = t.Id,
+                TaskName = t.TaskName,
+                TaskStatus = t.TaskStatus,
+                DeadLine = t.DeadLine,
+                Description = t.Description,
+                Done = t.Done
+            }).ToListAsync();
+            return tasks.Where(t => t.TaskStatus == status).ToList();
         }
     }
-
-
 }
