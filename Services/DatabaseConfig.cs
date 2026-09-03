@@ -12,7 +12,7 @@ namespace TodoList.Services
             var database = Env.GetString("MYSQL_DATABASE");
             var user = Env.GetString("MYSQL_USER");
             var password = Env.GetString("MYSQL_PASSWORD");
-            return $"Server={host}; Port={port}; Database={database}; User={user}; Password={password}!;"; 
+            return $"Server={host}; Port={port}; Database={database}; User={user}; Password={password};"; 
         }
     }
 }

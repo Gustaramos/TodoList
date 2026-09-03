@@ -7,6 +7,7 @@ namespace CRUD.Models
         public string TaskStatus { get; set; }
         public DateOnly DeadLine { get; set; }
         public string Description { get; set; }
+        public bool Done { get; set; }
 
     }
 }
